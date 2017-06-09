@@ -1,0 +1,84 @@
+{
+  parserClass="com.metamath.parser.MetamathParser"
+  parserUtilClass="com.metamath.parser.MetamathParserUtil"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="Metamath"
+  psiImplClassSuffix="Impl"
+  psiPackage="com.metamath.psi"
+  psiImplPackage="com.metamath.psi.impl"
+
+  elementTypeHolderClass="com.metamath.psi.MetamathTypes"
+  elementTypeClass="com.metamath.psi.MetamathElementType"
+  tokenTypeClass="com.metamath.psi.MetamathTokenType"
+
+  psiImplUtilClass="com.metamath.psi.impl.MetamathPsiImplUtil"
+}
+
+metamathFile ::= element_*
+
+private element_ ::= (comment | disjointed | essential | theorem | block | axiom | constant | variable | floating | include)
+
+comment    ::= COMMENT_BEGIN COMMENT_CHAR* COMMENT_END
+include    ::= INCLUDE_BEGIN LAB INCLUDE_END
+constant   ::= CONST SYMB* END
+variable   ::= VAR SYMB* END
+disjointed ::= DISJ SYMB* END
+floating   ::= LAB FLO SYMB SYMB END
+essential  ::= LAB ESS SYMB* END
+axiom      ::= LAB AX SYMB* END
+theorem    ::= LAB PR SYMB* EQ LAB* END
+block      ::= BLOCK_BEGIN element_* BLOCK_END
+
+
+/*
+SOURCE  <- BLOCK
+			BLOCK   <- ELEMENT*
+			ELEMENT <- COMMENT / DISJ / ESS / TH / '${' BLOCK '$}'/ AX / CONST / VAR / FLO / INCLUDE
+			EXPR    <- (SYMB / COMMENT)+
+			CONST   <-      '$c' SYMB '$.'
+			VAR     <-      '$v' EXPR '$.'
+			DISJ    <-      '$d' EXPR '$.'
+			FLO     <- LAB  '$f' EXPR '$.'
+			ESS     <- LAB  '$e' EXPR '$.'
+			AX      <- LAB  '$a' EXPR '$.'
+			TH      <- LAB  '$p' EXPR '$=' PROOF
+			PROOF   <- REF+ '$.'
+			REF     <- LAB
+
+			SYMB    <- < (![ \t\r\n$] .)+ >
+			LAB     <- < (![ \t\r\n$] .)+ >
+			COMMENT <- '$(' < (!'$)' .)* > '$)'
+            INCLUDE <- '$[' < (!'$]' .)* > '$]'
+*/
+
+/*
+simpleFile ::= item_*
+
+private item_ ::= (property|COMMENT|CRLF)
+
+property ::= (KEY? SEPARATOR VALUE?) | KEY {mixin="com.metamath.psi.impl.MetamathNamedElementImpl"
+  implements="com.metamath.psi.MetamathNamedElement" methods=[getKey getValue getName setName getNameIdentifier getPresentation]}
+*/
+
+/*
+simpleFile ::= item_*
+
+private item_ ::= (property|COMMENT|CRLF)
+
+property ::= (KEY? SEPARATOR VALUE?) | KEY {methods=[getKey getValue]}
+*/
+
+/*
+simpleFile ::= (property|COMMENT)*
+
+property ::= (KEY SEPARATOR VALUE?)|KEY {
+    pin=3
+    recoverWhile="recover_property"
+    mixin="com.metamath.psi.impl.MetamathNamedElementImpl"
+    implements="com.metamath.psi.MetamathNamedElement"
+    methods=[getKey getValue getName setName getNameIdentifier getPresentation]
+}
+
+private recover_property ::= !(KEY|SEPARATOR|COMMENT)*/
