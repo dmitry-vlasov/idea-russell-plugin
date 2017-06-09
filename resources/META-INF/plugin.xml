@@ -1,0 +1,48 @@
+<idea-plugin>
+  <id>org.russell.plugin.id</id>
+  <name>Russell language plugin</name>
+  <version>1.0</version>
+  <vendor email="vlasov@academ.org" url="http://https://github.com/dmitry-vlasov/russell">Russell Framework</vendor>
+
+  <description><![CDATA[
+      Plugin for the Russell language.<br>
+    ]]></description>
+
+  <change-notes><![CDATA[
+      Initial commit.<br>
+    ]]>
+  </change-notes>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/build_number_ranges.html for description -->
+  <idea-version since-build="145.0"/>
+
+  <!-- please see http://www.jetbrains.org/intellij/sdk/docs/basics/getting_started/plugin_compatibility.html
+       on how to target different products -->
+  <!-- uncomment to enable plugin in all products
+  <depends>com.intellij.modules.lang</depends>
+  -->
+
+  <extensions defaultExtensionNs="com.intellij">
+    <fileTypeFactory implementation="com.russell.RussellFileTypeFactory"/>
+    <lang.parserDefinition language="Russell" implementationClass="com.russell.RussellParserDefinition"/>
+    <lang.syntaxHighlighterFactory key="Russell" language="Russell" implementationClass="com.russell.RussellSyntaxHighlighterFactory"/>
+    <colorSettingsPage implementation="com.russell.RussellColorSettingsPage"/>
+    <annotator language="JAVA" implementationClass="com.russell.RussellAnnotator"/>
+    <codeInsight.lineMarkerProvider language="JAVA" implementationClass="com.russell.RussellLineMarkerProvider"/>
+    <completion.contributor language="Russell" implementationClass="com.russell.RussellCompletionContributor"/>
+    <psi.referenceContributor implementation="com.russell.RussellReferenceContributor"/>
+    <lang.refactoringSupport language="Russell" implementationClass="com.russell.RussellRefactoringSupportProvider"/>
+    <lang.findUsagesProvider language="Russell" implementationClass="com.russell.RussellFindUsagesProvider"/>
+    <lang.foldingBuilder language="JAVA" implementationClass="com.russell.RussellFoldingBuilder"/>
+    <gotoSymbolContributor implementation="com.russell.RussellChooseByNameContributor"/>
+    <lang.psiStructureViewFactory language="Russell" implementationClass="com.russell.RussellStructureViewFactory"/>
+    <lang.formatter language="Russell" implementationClass="com.russell.RussellFormattingModelBuilder"/>
+
+    <fileTypeFactory implementation="com.metamath.MetamathFileTypeFactory"/>
+  </extensions>
+
+  <actions>
+    <!-- Add your actions here -->
+  </actions>
+
+</idea-plugin>

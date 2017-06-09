@@ -1,0 +1,45 @@
+{
+  parserClass="com.russell.parser.RussellParser"
+  parserUtilClass="com.russell.parser.RussellParserUtil"
+
+  extends="com.intellij.extapi.psi.ASTWrapperPsiElement"
+
+  psiClassPrefix="Russell"
+  psiImplClassSuffix="Impl"
+  psiPackage="com.russell.psi"
+  psiImplPackage="com.russell.psi.impl"
+
+  elementTypeHolderClass="com.russell.psi.RussellTypes"
+  elementTypeClass="com.russell.psi.RussellElementType"
+  tokenTypeClass="com.russell.psi.RussellTokenType"
+
+  psiImplUtilClass="com.russell.psi.impl.RussellPsiImplUtil"
+}
+
+simpleFile ::= item_*
+
+private item_ ::= (property|COMMENT|CRLF)
+
+property ::= (KEY? SEPARATOR VALUE?) | KEY {mixin="com.russell.psi.impl.RussellNamedElementImpl"
+  implements="com.russell.psi.RussellNamedElement" methods=[getKey getValue getName setName getNameIdentifier getPresentation]}
+
+/*
+simpleFile ::= item_*
+
+private item_ ::= (property|COMMENT|CRLF)
+
+property ::= (KEY? SEPARATOR VALUE?) | KEY {methods=[getKey getValue]}
+*/
+
+/*
+simpleFile ::= (property|COMMENT)*
+
+property ::= (KEY SEPARATOR VALUE?)|KEY {
+    pin=3
+    recoverWhile="recover_property"
+    mixin="com.russell.psi.impl.RussellNamedElementImpl"
+    implements="com.russell.psi.RussellNamedElement"
+    methods=[getKey getValue getName setName getNameIdentifier getPresentation]
+}
+
+private recover_property ::= !(KEY|SEPARATOR|COMMENT)*/
