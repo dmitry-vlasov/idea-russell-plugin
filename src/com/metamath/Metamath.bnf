@@ -18,17 +18,17 @@
 
 metamathFile ::= element_*
 
-private element_ ::= (comment | disjointed | essential | theorem | block | axiom | constant | variable | floating | include)
+private element_ ::= (COMMENT | disjointed | essential | theorem | block | axiom | constant | variable | floating | include)
 
-comment    ::= COMMENT_BEGIN COMMENT_CHAR* COMMENT_END
+expr       ::= (SYMB | COMMENT)*
 include    ::= INCLUDE_BEGIN LAB INCLUDE_END
-constant   ::= CONST SYMB* END
-variable   ::= VAR SYMB* END
-disjointed ::= DISJ SYMB* END
-floating   ::= LAB FLO SYMB SYMB END
-essential  ::= LAB ESS SYMB* END
-axiom      ::= LAB AX SYMB* END
-theorem    ::= LAB PR SYMB* EQ LAB* END
+constant   ::= CONST expr END
+variable   ::= VAR expr END
+disjointed ::= DISJ expr END
+floating   ::= LAB FLO expr END
+essential  ::= LAB ESS expr END
+axiom      ::= LAB AX expr END
+theorem    ::= LAB PR expr EQ LAB* END
 block      ::= BLOCK_BEGIN element_* BLOCK_END
 
 

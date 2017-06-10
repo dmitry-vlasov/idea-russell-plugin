@@ -2,7 +2,7 @@ package com.metamath;
 
 import com.intellij.lexer.FlexLexer;
 import com.intellij.psi.tree.IElementType;
-import com.metamath.psi.metamathTypes;
+import com.metamath.psi.MetamathTypes;
 import com.intellij.psi.TokenType;
 
 %%
@@ -15,27 +15,37 @@ import com.intellij.psi.TokenType;
 %eof{  return;
 %eof}
 
-WHITE_SPACE=[\ \n\t\f]
-COMMENT_BEGIN=[$(]
-COMMENT_END=[$)]
-BLOCK_BEGIN=[${]
-BLOCK_END=[$}]
-INCLUDE_BEGIN=[$[]]
-INCLUDE_END=[$]
-CONST=[$c]
-VAR=[$v]
-DISJ=[$d]
-ESS=[$e]
-FLO=[$f]
-AX=[$a]
-PR=[$p]
-EQ=[$=]
-END=[$.]
-SYMB=[^$\ \n\t\f\\]
-LAB=[^$\ \n\t\f\\]
-COMMENT_CHAR=[^$)]
+COMMENT    = "$(" !([^]* "$)" [^]*) ("$)")?
+WHITESPACE = [\ \n\t\f]
+SYMB       = [^$\ \n\t\f\\]
+LAB        = [^$\ \n\t\f\\]
 
 %%
+
+<YYINITIAL> {
+    "${"            { return MetamathTypes.BLOCK_BEGIN; }
+    "$}"            { return MetamathTypes.BLOCK_END; }
+    "$["            { return MetamathTypes.INCLUDE_BEGIN; }
+    "$]"            { return MetamathTypes.INCLUDE_END; }
+
+    "$c"            { return MetamathTypes.CONST; }
+    "$v"            { return MetamathTypes.VAR; }
+    "$d"            { return MetamathTypes.DISJ; }
+    "$f"            { return MetamathTypes.FLO; }
+    "$e"            { return MetamathTypes.ESS; }
+    "$a"            { return MetamathTypes.AX; }
+    "$p"            { return MetamathTypes.PR; }
+    "$="            { return MetamathTypes.EQ; }
+    "$."            { return MetamathTypes.END; }
+
+    {SYMB}          { return MetamathTypes.SYMB; }
+    {LAB}           { return MetamathTypes.LAB; }
+    {COMMENT}       { return MetamathTypes.COMMENT; }
+    {WHITESPACE}    { return TokenType.WHITE_SPACE; }
+    .               { return TokenType.BAD_CHARACTER; }
+}
+
+
 
 /*
 %state WAITING_VALUE
